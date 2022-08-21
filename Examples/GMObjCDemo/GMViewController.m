@@ -69,6 +69,7 @@
   NSString *yuvPath = [[NSBundle mainBundle] pathForResource:@"frames0" ofType:@"yuv"];
   NSData *yuvData = [NSData dataWithContentsOfFile:yuvPath];
   NSLog(@"NSData类方法读取的内容是：%@",[[NSString alloc] initWithData:yuvData encoding:NSUTF8StringEncoding]);
+  NSLog(@"NSData类方法读取的内容是：%@",[yuvData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
   long long encBefore = [[self getNowTimeTimestamp3] longLongValue];
   NSLog(@"加密一帧YUV数据开始时间:%lld",encBefore);
   NSData *enYuvData = [GMSm2Utils encryptData:yuvData publicKey:pubKey];
@@ -92,6 +93,7 @@
   NSString *yuv25Path = [[NSBundle mainBundle] pathForResource:@"out_768x432_1s" ofType:@"yuv"];
   NSData *yuv25Data = [NSData dataWithContentsOfFile:yuv25Path];
   NSLog(@"NSData类方法读取的内容是：%@",[[NSString alloc] initWithData:yuv25Data encoding:NSUTF8StringEncoding]);
+  NSLog(@"NSData类方法读取的内容是：%@",[yuv25Data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
   long long enc25Before = [[self getNowTimeTimestamp3] longLongValue];
   NSLog(@"加密25帧YUV数据开始时间:%lld",enc25Before);
   NSData *enYuv25Data = [GMSm2Utils encryptData:yuv25Data publicKey:pubKey];
@@ -109,6 +111,30 @@
     NSLog(@"sm2 加密解密25帧YUV成功");
   }else{
     NSLog(@"sm2 加密解密25帧YUV失败");
+  }
+  
+    //获取MP4数据
+  NSString *mp4Path = [[NSBundle mainBundle] pathForResource:@"out" ofType:@"mp4"];
+  NSData *mp4Data = [NSData dataWithContentsOfFile:mp4Path];
+  NSLog(@"NSData类方法读取的内容是：%@",[[NSString alloc] initWithData:mp4Data encoding:NSUTF8StringEncoding]);
+  NSLog(@"NSData类方法读取的内容是：%@",[mp4Data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
+  long long encMp4Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密mp4数据开始时间:%lld",encMp4Before);
+  NSData *enMp4Data = [GMSm2Utils encryptData:mp4Data publicKey:pubKey];
+  long long encMp4After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密Mp4数据结束时间:%lld",encMp4After);
+  NSLog(@"加密Mp4数据耗时:%lld毫秒",encMp4After-encMp4Before);
+  
+  long long decMp4Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密Mp4数据开始时间:%lld",decMp4Before);
+  NSData *deMp4Result4 = [GMSm2Utils decryptToData:enMp4Data privateKey:priKey];
+  long long decMp4After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密Mp4数据结束时间:%lld",decMp4After);
+  NSLog(@"解密Mp4数据耗时:%lld毫秒",decMp4After-decMp4Before);
+  if ([mp4Data isEqualToData:deMp4Result4]) {
+    NSLog(@"sm2 加密解密Mp4成功");
+  }else{
+    NSLog(@"sm2 加密解密Mp4失败");
   }
 }
 ///MARK: - UI
