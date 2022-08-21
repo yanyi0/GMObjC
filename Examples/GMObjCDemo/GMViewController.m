@@ -21,7 +21,14 @@
 @end
 
 @implementation GMViewController
+-(NSString *)getNowTimeTimestamp3{
 
+    NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
+
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)([datenow timeIntervalSince1970]*1000)];
+
+    return timeSp;
+}
 ///MARK: - Life
 
 - (void)viewDidLoad {
@@ -31,6 +38,9 @@
     NSLog(@"GMObjC 版本：%s", GMOBJC_VERSION_TEXT);
     // 初始化测试用密码、公钥，私钥
     self.gPwd = @"123456";
+    //    self.gPwd = @"12";
+    //    NSData *strData = [self.gPwd dataUsingEncoding:NSUTF8StringEncoding];
+    //    self.gPwd = @"A";
     self.gPubkey = @"0408E3FFF9505BCFAF9307E665E9229F4E1B3936437A870407EA3D97886BAFBC9"
                     "C624537215DE9507BC0E2DD276CF74695C99DF42424F28E9004CDE4678F63D698";
     self.gPrikey = @"90F3A42B9FE24AB196305FD92EC82E647616C3A3694441FB3422E7838E24DEAE";
@@ -45,8 +55,62 @@
     [self readPemDerFiles];     // 测试读取PEM/DER文件
     [self saveToPemDerFiles];   // 测试保存SM2公私钥为PEM/DER文件格式
     [self createKeyPairFiles];  // 测试创建PEM/DER格式SM2密钥对
+  
+    //加密YUV文件
+    [self encryptYuv];
 }
-
+-(void)encryptYuv{
+    // 生成一对新的公私钥
+    NSArray *keyPair = [GMSm2Utils createKeyPair];
+    NSString *pubKey = keyPair[0]; // 测试用 04 开头公钥，Hex 编码格式
+    NSString *priKey = keyPair[1]; // 测试用私钥，Hex 编码格式
+  NSLog(@"公钥:%@,私钥:%@",pubKey,priKey);
+    //获取一帧YUV数据
+  NSString *yuvPath = [[NSBundle mainBundle] pathForResource:@"frames0" ofType:@"yuv"];
+  NSData *yuvData = [NSData dataWithContentsOfFile:yuvPath];
+  NSLog(@"NSData类方法读取的内容是：%@",[[NSString alloc] initWithData:yuvData encoding:NSUTF8StringEncoding]);
+  long long encBefore = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密一帧YUV数据开始时间:%lld",encBefore);
+  NSData *enYuvData = [GMSm2Utils encryptData:yuvData publicKey:pubKey];
+  long long encAfter = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密一帧YUV数据结束时间:%lld",encAfter);
+  NSLog(@"加密一帧YUV数据耗时:%lld毫秒",encAfter-encBefore);
+  
+  long long decBefore = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密一帧YUV数据开始时间:%lld",decBefore);
+  NSData *deYuvResult4 = [GMSm2Utils decryptToData:enYuvData privateKey:priKey];
+  long long decAfter = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密一帧YUV数据结束时间:%lld",decAfter);
+  NSLog(@"解密一帧YUV数据耗时:%lld毫秒",decAfter-decBefore);
+  if ([yuvData isEqualToData:deYuvResult4]) {
+    NSLog(@"sm2 加密解密YUV成功");
+  }else{
+    NSLog(@"sm2 加密解密YUV失败");
+  }
+  
+    //获取25帧YUV数据
+  NSString *yuv25Path = [[NSBundle mainBundle] pathForResource:@"out_768x432_1s" ofType:@"yuv"];
+  NSData *yuv25Data = [NSData dataWithContentsOfFile:yuv25Path];
+  NSLog(@"NSData类方法读取的内容是：%@",[[NSString alloc] initWithData:yuv25Data encoding:NSUTF8StringEncoding]);
+  long long enc25Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密25帧YUV数据开始时间:%lld",enc25Before);
+  NSData *enYuv25Data = [GMSm2Utils encryptData:yuv25Data publicKey:pubKey];
+  long long enc25After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密25帧YUV数据结束时间:%lld",enc25After);
+  NSLog(@"加密25帧YUV数据耗时:%lld毫秒",enc25After-enc25Before);
+  
+  long long dec25Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密25帧YUV数据开始时间:%lld",dec25Before);
+  NSData *deYuv25Result4 = [GMSm2Utils decryptToData:enYuv25Data privateKey:priKey];
+  long long dec25After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密25帧YUV数据结束时间:%lld",dec25After);
+  NSLog(@"解密25帧YUV数据耗时:%lld毫秒",dec25After-dec25Before);
+  if ([yuv25Data isEqualToData:deYuv25Result4]) {
+    NSLog(@"sm2 加密解密25帧YUV成功");
+  }else{
+    NSLog(@"sm2 加密解密25帧YUV失败");
+  }
+}
 ///MARK: - UI
 - (void)createUI {
     self.gTextView = [[UITextView alloc]initWithFrame:CGRectZero];
@@ -88,12 +152,12 @@
     NSString *enResult1 = [GMSm2Utils encryptText:plaintext publicKey:pubKey]; // 加密普通字符串
     NSString *enResult2 = [GMSm2Utils encryptHex:plainHex publicKey:pubKey]; // 加密 Hex 编码格式字符串
     NSData *enResult3 = [GMSm2Utils encryptData:plainData publicKey:pubKey]; // 加密 NSData 类型数据
-
+  
     // sm2 解密
     NSString *deResult1 = [GMSm2Utils decryptToText:enResult1 privateKey:priKey]; // 解密为普通字符串明文
     NSString *deResult2 = [GMSm2Utils decryptToHex:enResult2 privateKey:priKey]; // 解密为 Hex 格式明文
     NSData *deResult3 = [GMSm2Utils decryptToData:enResult3 privateKey:priKey]; // 解密为 NSData 格式明文
-    
+  
     // 判断 sm2 加解密结果
     if ([deResult1 isEqualToString:plaintext] || [deResult2 isEqualToString:plainHex] || [deResult3 isEqualToData:plainData]) {
         NSLog(@"sm2 加密解密成功");
