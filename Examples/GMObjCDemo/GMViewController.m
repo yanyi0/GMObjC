@@ -136,6 +136,53 @@
   }else{
     NSLog(@"sm2 加密解密Mp4失败");
   }
+  
+  //获取一帧H264数据
+  NSString *h264Path = [[NSBundle mainBundle] pathForResource:@"frames0" ofType:@"h264"];
+  NSData *h264Data = [NSData dataWithContentsOfFile:h264Path];
+  NSLog(@"NSData类方法读取的内容是：%@",[[NSString alloc] initWithData:h264Data encoding:NSUTF8StringEncoding]);
+  NSLog(@"NSData类方法读取的内容是：%@",[h264Data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
+  long long encH264Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密一帧h264数据开始时间:%lld",encH264Before);
+  NSData *enH264Data = [GMSm2Utils encryptData:h264Data publicKey:pubKey];
+  long long encH264After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密一帧h264数据结束时间:%lld",encH264After);
+  NSLog(@"加密一帧h264数据耗时:%lld毫秒",encH264After-encH264Before);
+  
+  long long decH264Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密一帧h264数据开始时间:%lld",decH264Before);
+  NSData *deH264Result4 = [GMSm2Utils decryptToData:enH264Data privateKey:priKey];
+  long long decH264After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密一帧h264数据结束时间:%lld",decH264After);
+  NSLog(@"解密一帧h264数据耗时:%lld毫秒",decH264After-decH264Before);
+  if ([h264Data isEqualToData:deH264Result4]) {
+    NSLog(@"sm2 加密解密h264成功");
+  }else{
+    NSLog(@"sm2 加密解密h264失败");
+  }
+  //获取25帧h264数据
+  NSString *h26425Path = [[NSBundle mainBundle] pathForResource:@"out_768x432_1s" ofType:@"h264"];
+  NSData *h26425Data = [NSData dataWithContentsOfFile:h26425Path];
+  NSLog(@"NSData类方法读取的内容是：%@",[[NSString alloc] initWithData:h26425Data encoding:NSUTF8StringEncoding]);
+  NSLog(@"NSData类方法读取的内容是：%@",[h26425Data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
+  long long encH26425Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密25帧H264数据开始时间:%lld",encH26425Before);
+  NSData *enH26425Data = [GMSm2Utils encryptData:h26425Data publicKey:pubKey];
+  long long encH26425After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"加密25帧h264数据结束时间:%lld",encH26425After);
+  NSLog(@"加密25帧h264数据耗时:%lld毫秒",encH26425After-encH26425Before);
+  
+  long long decH26425Before = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密25帧h264数据开始时间:%lld",decH26425Before);
+  NSData *deH26425Result4 = [GMSm2Utils decryptToData:enH26425Data privateKey:priKey];
+  long long decH26425After = [[self getNowTimeTimestamp3] longLongValue];
+  NSLog(@"解密25帧h264数据结束时间:%lld",decH26425After);
+  NSLog(@"解密25帧h264数据耗时:%lld毫秒",decH26425After-decH26425Before);
+  if ([h26425Data isEqualToData:deH26425Result4]) {
+    NSLog(@"sm2 加密解密25帧h264成功");
+  }else{
+    NSLog(@"sm2 加密解密25帧h264失败");
+  }
 }
 ///MARK: - UI
 - (void)createUI {

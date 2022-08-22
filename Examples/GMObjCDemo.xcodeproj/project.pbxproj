@@ -11,6 +11,8 @@
 		61C4542D28B22FB9002030A4 /* frames0.yuv in Resources */ = {isa = PBXBuildFile; fileRef = 61C4542B28B22FB8002030A4 /* frames0.yuv */; };
 		61C4542E28B22FB9002030A4 /* out_768x432_1s.yuv in Resources */ = {isa = PBXBuildFile; fileRef = 61C4542C28B22FB9002030A4 /* out_768x432_1s.yuv */; };
 		61C4543028B23486002030A4 /* out.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 61C4542F28B23486002030A4 /* out.mp4 */; };
+		61C4543228B334B7002030A4 /* out_768x432_1s.h264 in Resources */ = {isa = PBXBuildFile; fileRef = 61C4543128B334B7002030A4 /* out_768x432_1s.h264 */; };
+		61C4543428B3352B002030A4 /* frames0.h264 in Resources */ = {isa = PBXBuildFile; fileRef = 61C4543328B3352B002030A4 /* frames0.h264 */; };
 		9C745900270FE3AE0062C1E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C7458FF270FE3AE0062C1E5 /* Assets.xcassets */; };
 		9C745903270FE3AE0062C1E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C745901270FE3AE0062C1E5 /* LaunchScreen.storyboard */; };
 		9C745906270FE3AE0062C1E5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C745905270FE3AE0062C1E5 /* main.m */; };
@@ -74,6 +76,8 @@
 		61C4542B28B22FB8002030A4 /* frames0.yuv */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames0.yuv; sourceTree = "<group>"; };
 		61C4542C28B22FB9002030A4 /* out_768x432_1s.yuv */ = {isa = PBXFileReference; lastKnownFileType = file; path = out_768x432_1s.yuv; sourceTree = "<group>"; };
 		61C4542F28B23486002030A4 /* out.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = out.mp4; sourceTree = "<group>"; };
+		61C4543128B334B7002030A4 /* out_768x432_1s.h264 */ = {isa = PBXFileReference; lastKnownFileType = file; path = out_768x432_1s.h264; sourceTree = "<group>"; };
+		61C4543328B3352B002030A4 /* frames0.h264 */ = {isa = PBXFileReference; lastKnownFileType = file; path = frames0.h264; sourceTree = "<group>"; };
 		9C7458F0270FE3AD0062C1E5 /* GMObjC iOS Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GMObjC iOS Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C7458FF270FE3AE0062C1E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C745902270FE3AE0062C1E5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -190,6 +194,8 @@
 		9C7458F2270FE3AD0062C1E5 /* GMObjCDemo */ = {
 			isa = PBXGroup;
 			children = (
+				61C4543328B3352B002030A4 /* frames0.h264 */,
+				61C4543128B334B7002030A4 /* out_768x432_1s.h264 */,
 				61C4542F28B23486002030A4 /* out.mp4 */,
 				61C4542B28B22FB8002030A4 /* frames0.yuv */,
 				61C4542C28B22FB9002030A4 /* out_768x432_1s.yuv */,
@@ -376,6 +382,7 @@
 				9CBB8A1327101106008411A1 /* sm2pub-5.pem in Resources */,
 				9CBB89FA27101106008411A1 /* sm2pri-5.der in Resources */,
 				9CBB89F927101106008411A1 /* sm2pri-7.der in Resources */,
+				61C4543228B334B7002030A4 /* out_768x432_1s.h264 in Resources */,
 				9CBB89F027101106008411A1 /* sm2pri-3.pem in Resources */,
 				9CBB8A0327101106008411A1 /* sm2pri8-2.pem in Resources */,
 				9CBB89F827101106008411A1 /* sm2pri-6.der in Resources */,
@@ -415,6 +422,7 @@
 				9C745900270FE3AE0062C1E5 /* Assets.xcassets in Resources */,
 				9CBB8A0527101106008411A1 /* sm2pri8-5.pem in Resources */,
 				9CBB89EC27101106008411A1 /* sm2pri-5.pem in Resources */,
+				61C4543428B3352B002030A4 /* frames0.h264 in Resources */,
 				9CBB8A0E27101106008411A1 /* sm2pub-4.der in Resources */,
 				9CBB8A0027101106008411A1 /* sm2pri8-8.pem in Resources */,
 				9CBB8A0727101106008411A1 /* sm2pri8-6.pem in Resources */,
